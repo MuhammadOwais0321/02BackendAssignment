@@ -5,7 +5,7 @@ const router = express.Router()
 
 
 
-router.get('/updateprofile/:id', userProfileUpdate)
+router.post('/updateprofile/:id', userProfileUpdate)
 
 
 
