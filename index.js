@@ -5,18 +5,23 @@ import registerRouter from './routes/register.routes.js'
 import { ConnectDB } from './config/dbConnection.config.js'
 import { auth } from './middlewares/auth.js'
 import userRouter from './routes/user.routes.js'
+import cookieParser from 'cookie-parser'
 
 
 const app = express()
 const Port = process.env.PORT
 const Mongo_url = process.env.MONGODB_URL
 
+// DBConnection
+
+
+ConnectDB(Mongo_url)
+
 // Middlewares
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+app.use(cookieParser())
 
-// DBConnection
-ConnectDB(Mongo_url)
 
 
 //Route

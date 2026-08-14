@@ -40,42 +40,32 @@ export const userLoginController = async (req, res) => {
 
     const { token, refreshToken } = await jsonWebToken(user);
     res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
-    console.log(refreshToken);
 
     res.json({ token, user });
   } catch (error) {
-    res.json({ message: error });
+    res.status(500).json({ message: error.message });
   }
 };
 
 export const refreshTokenController = async (req, res) => {
   try {
-    const refreshToken = req.cookies.refreshToken;
+    const refreshToken = req.cookie.refreshToken;
     if (!refreshToken) {
       return res.send("refreshToken token is not provieded");
     }
-     jwt.verify(
-      refreshToken,
-      process.env.JWT_SECRET,
-      async (err, decodePayload) => {
-        if (err) {
-          console.log(err);
-          return res.status(403).json({ message: "Invalid or token expired" });
-        }
-        console.log(decodePayload);
-
-        const token =  jwt.sign(
-          {
-            userId: decodePayload.userId,
-            userEmail: decodePayload.userEmail,
-          },
-          process.env.JWT_SECRET,
-          { expiresIn: "15m" },
-        );
-        return res.status(200).send(token);
-      },
-    );
+    const user = await jwt.verify(refreshToken, process.env.JWT_SECRET);
+    console.log(user)
+    
+    const token = await jwt.sign(
+      {
+        userId: user.userId,
+        userEmail: user.userEmail,
+    },
+    process.env.JWT_SECRET,
+    {expiresIn:"15m"}
+  )
+  res.send(token)
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error.message });
   }
 };
