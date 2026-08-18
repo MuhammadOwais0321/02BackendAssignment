@@ -7,12 +7,33 @@ export const userProfileUpdate = async (req, res) => {
     const id = req.params.id;
     const user = await User.findById(id);
     if (!user) return res.status(404).json({ message: "user not found" });
-    const { name, phone, address, gender } = req.body;
+    console.log(req.body);
+
+    const { first_name, last_name, phone, address, gender } = req.body;
+    console.log(first_name, last_name, phone);
+
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { name, phone, address, gender },
+      { first_name, last_name, phone, address, gender },
       { new: true },
     );
-    res.send(updatedUser);
-  } catch (error) {}
+    console.log(updatedUser);
+    res.status(201).json({ user: updatedUser, success: true });
+  } catch (error) {
+    res.json({ message: error.message, success: false });
+  }
+};
+
+export const userProfile = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await User.findById(id);
+    if(!user){
+      res.status(404).json({message: 'user not found', success: false})
+    }
+    res.status(200).json({ user });
+    
+  } catch (error) {
+    res.status(500).json({message: error.message, success: false})
+  }
 };

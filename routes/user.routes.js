@@ -1,5 +1,5 @@
 import express from 'express'
-import { userProfileUpdate } from '../controllers/user.controllers.js'
+import { userProfile, userProfileUpdate } from '../controllers/user.controllers.js'
 
 const router = express.Router()
 
@@ -7,6 +7,6 @@ const router = express.Router()
 
 router.post('/updateprofile/:id', userProfileUpdate)
 
-
+router.get('/userProfile/:id',userProfile)
 
 export default router

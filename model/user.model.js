@@ -3,29 +3,36 @@ import mongoose from "mongoose";
 const userSchema = mongoose.Schema({
     email:{
         type : String,
-        require: true,
+        required: true,
         unique: true
     },
     password:{
         type : String,
-        require: true,
+        required: true,
     },
-    name:{
+    first_name:{
         type : String,
-        require: false,
+        required: false,
+    },
+    last_name:{
+        type : String,
+        required: false,
     },
     phone:{
         type : String,
-        require: false,
+        required: false,
     },
     address:{
         type : String,
-        require: false,
+        required: false,
     },
     gender:{
         type: String ,
-        require: false,
+        required: false,
         enum:['Male', "Female", 'Others']
+    },
+    profile_pic:{
+        type: String
     }
 })
 
